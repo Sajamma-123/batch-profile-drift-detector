@@ -1,0 +1,51 @@
+# Data Pipeline Configuration
+database:
+  path: "pipeline.db"
+
+schema:
+  primary_key: "transaction_id"
+  reference_table: "customers"
+  reference_key: "customer_id"
+  required_fields:
+    - "transaction_id"
+    - "customer_id"
+    - "amount"
+    - "currency"
+    - "status"
+    - "timestamp"
+  allowed_currencies:
+    - "USD"
+    - "EUR"
+    - "GBP"
+    - "CAD"
+    - "JPY"
+  allowed_statuses:
+    - "COMPLETED"
+    - "PENDING"
+    - "FAILED"
+    - "CANCELLED"
+
+thresholds:
+  # Alert if null rate delta exceeds 10 percentage points (0.10)
+  null_rate_delta: 0.10
+  # Alert if row count drops by more than 25% vs baseline
+  row_count_drop_pct: 0.25
+  # Alert if row count surges by more than 100% vs baseline
+  row_count_surge_pct: 1.00
+  # Alert if numeric mean shifts by more than 20% vs baseline
+  mean_shift_pct: 0.20
+  # Alert if max timestamp staleness exceeds 3 days (freshness)
+  freshness_lag_days: 3.0
+  # Alert if distinct count drops by more than 30% vs baseline
+  distinct_count_drop_pct: 0.30
+
+profiling:
+  key_columns:
+    - "transaction_id"
+    - "customer_id"
+    - "amount"
+    - "currency"
+    - "status"
+    - "timestamp"
+    - "merchant_id"
+  top_n_categories: 5
